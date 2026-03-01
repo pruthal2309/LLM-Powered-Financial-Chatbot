@@ -107,9 +107,11 @@ async def query_documents(request: QueryRequest):
         raise
     except Exception as e:
         print(f"[ERROR] Error processing query: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=500,
-            detail="An error occurred while processing your question"
+            detail=f"Error: {str(e)}"  # Show actual error for debugging
         )
 
 

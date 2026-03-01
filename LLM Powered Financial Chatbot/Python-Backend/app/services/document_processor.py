@@ -10,7 +10,7 @@ import pymupdf as fitz  # PyMuPDF for PDF processing
 from typing import List
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 
 from app.config.settings import settings
@@ -32,9 +32,11 @@ class DocumentProcessor:
         )
         
         # Vision-capable LLM for image analysis
-        self.vision_llm = ChatGoogleGenerativeAI(
+        self.vision_llm = ChatOpenAI(
             model=settings.LLM_MODEL,
-            google_api_key=settings.GOOGLE_API_KEY
+            max_tokens=500,  # Limit image descriptions to save credits
+            openai_api_key=settings.GROQ_API_KEY,
+            openai_api_base="https://api.groq.com/openai/v1",
         )
     
     def _get_image_description(self, image_bytes: bytes) -> str:

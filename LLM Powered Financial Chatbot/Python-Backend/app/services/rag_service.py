@@ -32,12 +32,9 @@ class RAGService:
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL,
             temperature=settings.LLM_TEMPERATURE,
-            openai_api_key=settings.OPENROUTER_API_KEY,
-            openai_api_base="https://openrouter.ai/api/v1",
-            default_headers={
-                "HTTP-Referer": settings.OPENROUTER_SITE_URL,
-                "X-Title": settings.OPENROUTER_APP_NAME,
-            }
+            max_tokens=2000,  # Limit response length to save credits
+            openai_api_key=settings.GROQ_API_KEY,
+            openai_api_base="https://api.groq.com/openai/v1",
         )
     
     def _format_documents(self, docs: List[Document]) -> str:

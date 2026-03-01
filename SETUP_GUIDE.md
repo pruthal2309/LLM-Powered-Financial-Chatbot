@@ -11,7 +11,7 @@ Before you begin, make sure you have:
 - **Node.js** 18+ ([Download](https://nodejs.org/))
 - **Python** 3.9+ ([Download](https://python.org/))
 - **MongoDB** 6+ ([Download](https://mongodb.com/try/download/community))
-- **Google Gemini API Key** ([Get Free Key](https://makersuite.google.com/app/apikey))
+- **OpenRouter API Key** ([Get Free Key](https://openrouter.ai/keys))
 
 ---
 
@@ -47,7 +47,9 @@ CORS_ORIGIN=http://localhost:5173
 #### Python Backend Configuration
 Edit `LLM Powered Financial Chatbot/Python-Backend/.env`:
 ```env
-GOOGLE_API_KEY=your_gemini_api_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_SITE_URL=http://localhost:5173
+OPENROUTER_APP_NAME=FinChatBot
 NODE_WEBHOOK_URL=http://localhost:8000
 PORT=5000
 ```
@@ -150,9 +152,10 @@ pip install -r requirements.txt --force-reinstall
 ### AI Not Responding
 **Problem:** No response from AI  
 **Solution:**
-1. Verify Google Gemini API key is correct
+1. Verify OpenRouter API key is correct in `.env`
 2. Check Python backend terminal for errors
-3. Make sure you have internet connection (for Gemini API)
+3. Make sure you have internet connection (for OpenRouter API)
+4. Verify you have credits/quota on OpenRouter (free models available)
 
 ---
 
@@ -169,7 +172,7 @@ MongoDB (Local Database)
     ↓
 Python AI Service (http://localhost:5000)
     ↓
-FAISS (Vector Store) + Google Gemini (AI)
+FAISS (Vector Store) + OpenRouter AI (100+ Models)
 ```
 
 ---
@@ -178,11 +181,11 @@ FAISS (Vector Store) + Google Gemini (AI)
 
 - **No Authentication** - Direct access to chat
 - **Document Upload** - PDF and Excel support
-- **AI-Powered Responses** - Using Google Gemini
+- **AI-Powered Responses** - Using OpenRouter (100+ AI models)
 - **Multi-Modal Analysis** - Text and images
 - **Conversation Management** - Create, view, delete chats
 - **Local Storage** - All data stays on your machine
-- **Free to Use** - No cloud costs
+- **Free Models Available** - Use free AI models or pay-per-use
 
 ---
 
@@ -190,8 +193,9 @@ FAISS (Vector Store) + Google Gemini (AI)
 
 - All conversations are stored locally in MongoDB
 - Documents are processed and stored in FAISS vector database
-- The system requires internet only for Google Gemini API calls
-- No user data is sent to external services (except AI queries to Gemini)
+- The system requires internet only for OpenRouter API calls
+- No user data is sent to external services (except AI queries to OpenRouter)
+- Free AI models available: Gemini, Llama, Phi-3, Qwen, and more
 
 ---
 

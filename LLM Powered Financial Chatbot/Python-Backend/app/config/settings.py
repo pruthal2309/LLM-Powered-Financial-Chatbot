@@ -11,10 +11,10 @@ class Settings(BaseSettings):
     Application settings loaded from environment variables
     """
     
-    # OpenRouter API Key (required for AI responses)
-    OPENROUTER_API_KEY: str
+    # Groq API Key (FREE and FAST)
+    GROQ_API_KEY: str
     
-    # Optional: Your site URL and app name for OpenRouter
+    # Optional: Your site URL and app name (not needed for Groq)
     OPENROUTER_SITE_URL: str = "http://localhost:5173"
     OPENROUTER_APP_NAME: str = "FinChatBot"
     
@@ -30,9 +30,10 @@ class Settings(BaseSettings):
     # Embedding Model Configuration
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     
-    # LLM Configuration
-    LLM_MODEL: str = "google/gemini-2.0-flash-exp:free"  # OpenRouter model
+    # LLM Configuration (Groq)
+    LLM_MODEL: str = "llama-3.1-8b-instant"  # FREE Groq model
     LLM_TEMPERATURE: float = 0.0
+    LLM_MAX_TOKENS: int = 2000  # Limit to save credits
     
     # Document Processing Configuration
     CHUNK_SIZE: int = 1000

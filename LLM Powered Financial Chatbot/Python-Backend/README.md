@@ -8,7 +8,7 @@ A modern, local-only AI service for financial document analysis using RAG (Retri
 - **Multi-Modal Processing**: Extracts text and analyzes images from PDFs
 - **RAG Pipeline**: Retrieval Augmented Generation for accurate answers
 - **Multiple Modes**: Smart Chat, Document Analysis, Analytical Insights, General Conversation
-- **Google Gemini AI**: Powered by Google's Gemini model
+- **OpenRouter AI**: Access to 100+ AI models (Gemini, GPT, Claude, Llama, etc.)
 - **Local Embeddings**: HuggingFace sentence transformers (runs on CPU)
 
 ## 📁 Project Structure
@@ -40,7 +40,7 @@ Python-Backend-Updated/
 
 - **Python**: 3.9 or higher
 - **pip**: Latest version
-- **Google Gemini API Key**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- **OpenRouter API Key**: Get from [OpenRouter](https://openrouter.ai/keys)
 
 ### Installation
 
@@ -75,8 +75,12 @@ Python-Backend-Updated/
 
 5. **Configure `.env` file**:
    ```env
-   # Google Gemini API Key (REQUIRED)
-   GOOGLE_API_KEY=your-google-api-key-here
+   # OpenRouter API Key (REQUIRED)
+   OPENROUTER_API_KEY=your-openrouter-api-key-here
+
+   # Optional: Your site info
+   OPENROUTER_SITE_URL=http://localhost:5173
+   OPENROUTER_APP_NAME=FinChatBot
 
    # Node.js Backend URL
    NODE_WEBHOOK_URL=http://localhost:8000
@@ -85,14 +89,15 @@ Python-Backend-Updated/
    PORT=5000
    ```
 
-### Getting Google Gemini API Key
+### Getting OpenRouter API Key
 
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Sign in with your Google account
-3. Click "Create API Key"
-4. Copy the key and paste it in `.env`
+1. Visit [OpenRouter](https://openrouter.ai/)
+2. Sign up or log in
+3. Go to [API Keys](https://openrouter.ai/keys)
+4. Click "Create Key"
+5. Copy the key and paste it in `.env`
 
-**Note**: Gemini API has a generous free tier!
+**Note**: OpenRouter offers free models and pay-per-use pricing!
 
 ### Running the Server
 
@@ -214,7 +219,7 @@ Batch deletion for conversation cleanup
 
 ### AI/ML
 - **LangChain**: RAG framework
-- **Google Gemini**: Large language model
+- **OpenRouter**: Access to 100+ AI models (Gemini, GPT-4, Claude, Llama, etc.)
 - **HuggingFace Transformers**: Embedding models
 - **FAISS**: Vector similarity search
 
@@ -322,10 +327,11 @@ pip install -r requirements.txt --force-reinstall
 pip install faiss-cpu
 ```
 
-**Gemini API errors**:
+**OpenRouter API errors**:
 - Check API key in `.env`
-- Verify key is valid at [Google AI Studio](https://makersuite.google.com/)
-- Check API quota/limits
+- Verify key is valid at [OpenRouter](https://openrouter.ai/keys)
+- Check your credits/quota at [OpenRouter Activity](https://openrouter.ai/activity)
+- Try a different model (many free options available)
 
 **Out of memory**:
 - Reduce `CHUNK_SIZE` in settings
@@ -336,7 +342,7 @@ pip install faiss-cpu
 
 - **API Key**: Never commit `.env` to version control
 - **Local Only**: All data stays on your machine
-- **No Cloud**: No external services except Gemini API
+- **No Cloud Storage**: No external services except OpenRouter API
 - **Validation**: All inputs validated with Pydantic
 
 ## 📊 Performance
@@ -348,10 +354,11 @@ pip install faiss-cpu
 - **Quality**: Good for most use cases
 
 ### LLM Model
-- **Model**: Gemini 2.0 Flash
+- **Default**: google/gemini-2.0-flash-exp:free (via OpenRouter)
 - **Speed**: Very fast
 - **Quality**: Excellent
 - **Cost**: Free tier available
+- **Alternatives**: 100+ models available (GPT-4, Claude, Llama, etc.)
 
 ### Vector Search
 - **FAISS**: Extremely fast

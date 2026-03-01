@@ -9,6 +9,7 @@ import { conversationAPI, documentAPI } from '../utils/api';
 import Sidebar from '../components/Sidebar';
 import Message from '../components/Message';
 import ChatInput from '../components/ChatInput';
+import FeatureSelector from '../components/FeatureSelector';
 
 const ChatPage = () => {
   // State
@@ -18,6 +19,7 @@ const ChatPage = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
+  const [selectedFeature, setSelectedFeature] = useState('Smart_Chat');
   
   const messagesEndRef = useRef(null);
 
@@ -96,11 +98,15 @@ const ChatPage = () => {
    */
   const handleNewChat = async () => {
     try {
-      const response = await conversationAPI.create({ title: 'New Chat' });
+      const response = await conversationAPI.create({ 
+        title: 'New Chat',
+        featureUsed: selectedFeature 
+      });
       const newConvo = response.data.data;
       setConversations((prev) => [newConvo, ...prev]);
       setCurrentConversationId(newConvo._id);
       setMessages([]);
+      setSelectedFeature(newConvo.featureUsed || 'Smart_Chat');
     } catch (error) {
       console.error('Failed to create conversation:', error);
     }
@@ -109,9 +115,15 @@ const ChatPage = () => {
   /**
    * Select conversation
    */
-  const handleSelectChat = (id) => {
+  const handleSelectChat = async (id) => {
     setCurrentConversationId(id);
     setIsSidebarOpen(false); // Close sidebar on mobile
+    
+    // Load the conversation's feature mode
+    const conv = conversations.find(c => c._id === id);
+    if (conv) {
+      setSelectedFeature(conv.featureUsed || 'Smart_Chat');
+    }
   };
 
   /**
@@ -154,12 +166,30 @@ const ChatPage = () => {
     setMessages((prev) => [...prev, tempMessage]);
 
     const messageContent = input;
+    const isFirstMessage = messages.length === 0;
     setInput('');
     setIsLoading(true);
 
     try {
       // Send message to backend
       await conversationAPI.sendMessage(currentConversationId, messageContent);
+      
+      // Auto-generate title from first message
+      if (isFirstMessage) {
+        const title = messageContent.length > 50 
+          ? messageContent.substring(0, 47) + '...'
+          : messageContent;
+        
+        try {
+          await conversationAPI.update(currentConversationId, { title });
+          // Update local state
+          setConversations(prev => 
+            prev.map(c => c._id === currentConversationId ? { ...c, title } : c)
+          );
+        } catch (err) {
+          console.error('Failed to update title:', err);
+        }
+      }
       
       // Refetch messages to get AI response
       await fetchMessages();
@@ -242,6 +272,26 @@ const ChatPage = () => {
     );
   };
 
+  /**
+   * Change feature mode
+   */
+  const handleFeatureChange = async (feature) => {
+    if (!currentConversationId || isLoading) return;
+    
+    setSelectedFeature(feature);
+    
+    // Update conversation feature mode in backend
+    try {
+      await conversationAPI.update(currentConversationId, { featureUsed: feature });
+      // Update local state
+      setConversations(prev => 
+        prev.map(c => c._id === currentConversationId ? { ...c, featureUsed: feature } : c)
+      );
+    } catch (error) {
+      console.error('Failed to update feature mode:', error);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
       {/* Sidebar */}
@@ -274,26 +324,35 @@ const ChatPage = () => {
                 <h1 className="text-lg font-bold gradient-text">
                   Financial AI Assistant
                 </h1>
-                <p className="text-xs text-gray-500">Powered by Google Gemini</p>
+                <p className="text-xs text-gray-500">Powered by Groq AI</p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleShare}
-              className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
-              title="Share conversation"
-            >
-              <Share2 className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
-            </button>
-            <button
-              onClick={handleExport}
-              className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
-              title="Export conversation"
-            >
-              <Download className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
-            </button>
+          <div className="flex items-center gap-4">
+            {/* Feature Selector in Header */}
+            <FeatureSelector
+              selectedFeature={selectedFeature}
+              onFeatureChange={handleFeatureChange}
+              disabled={isLoading}
+            />
+            
+            <div className="flex items-center gap-2 border-l border-gray-200 pl-4">
+              <button
+                onClick={handleShare}
+                className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
+                title="Share conversation"
+              >
+                <Share2 className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
+              </button>
+              <button
+                onClick={handleExport}
+                className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
+                title="Export conversation"
+              >
+                <Download className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
+              </button>
+            </div>
           </div>
         </header>
 

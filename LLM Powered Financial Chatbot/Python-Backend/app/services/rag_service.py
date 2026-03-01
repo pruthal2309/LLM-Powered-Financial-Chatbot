@@ -5,7 +5,7 @@ Simplified version with clear logic flow
 """
 
 from typing import List, Dict
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
@@ -18,6 +18,7 @@ from app.config.prompts import (
     GENERAL_CONVERSATION_PROMPT
 )
 from app.services.vector_store import vector_store
+import traceback
 
 
 class RAGService:
@@ -28,11 +29,15 @@ class RAGService:
     
     def __init__(self):
         """Initialize RAG service with LLM"""
-        self.llm = ChatGoogleGenerativeAI(
+        self.llm = ChatOpenAI(
             model=settings.LLM_MODEL,
             temperature=settings.LLM_TEMPERATURE,
-            google_api_key=settings.GOOGLE_API_KEY,
-            convert_system_message_to_human=True
+            openai_api_key=settings.OPENROUTER_API_KEY,
+            openai_api_base="https://openrouter.ai/api/v1",
+            default_headers={
+                "HTTP-Referer": settings.OPENROUTER_SITE_URL,
+                "X-Title": settings.OPENROUTER_APP_NAME,
+            }
         )
     
     def _format_documents(self, docs: List[Document]) -> str:
@@ -342,11 +347,18 @@ class RAGService:
             
         except Exception as e:
             print(f"\n[ERROR] Error generating answer: {e}")
+            # Print full traceback for debugging
+            traceback.print_exc()
+            try:
+                with open("error_traceback.log", "a", encoding="utf-8") as fh:
+                    fh.write(traceback.format_exc())
+                    fh.write("\n---\n")
+            except Exception:
+                pass
             return (
                 "I encountered an error while processing your question. "
                 "Please try again or rephrase your question."
             )
-
-
+            
 # Create global RAG service instance
 rag_service = RAGService()

@@ -49,7 +49,7 @@ const ChatPage = () => {
 
   /**
    * Fetch all conversations
-   */
+  */
   const fetchConversations = async () => {
     try {
       const response = await conversationAPI.getAll();

@@ -206,3 +206,4 @@ async def delete_multiple_documents(documents: list):
             status_code=500,
             detail=f"Failed to delete documents: {str(e)}"
         )
+

@@ -124,11 +124,18 @@ const DataVisualization = ({ content }) => {
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
+    aspectRatio: window.innerWidth < 640 ? 1.5 : 2,
     plugins: {
       legend: {
         display: chartType === 'pie',
         position: 'bottom',
+        labels: {
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12,
+          },
+          padding: window.innerWidth < 640 ? 8 : 10,
+        },
       },
       title: {
         display: false,
@@ -137,17 +144,29 @@ const DataVisualization = ({ content }) => {
     scales: chartType !== 'pie' ? {
       y: {
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12,
+          },
+        },
+      },
+      x: {
+        ticks: {
+          font: {
+            size: window.innerWidth < 640 ? 10 : 12,
+          },
+        },
       },
     } : undefined,
   };
 
   return (
-    <div className="my-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold text-gray-700">📊 Data Visualization</h4>
+    <div className="my-3 sm:my-4 p-3 sm:p-4 bg-white rounded-lg sm:rounded-xl border border-gray-200 shadow-sm">
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <h4 className="text-xs sm:text-sm font-semibold text-gray-700">📊 Data Visualization</h4>
         <span className="text-xs text-gray-500 capitalize">{chartType} Chart</span>
       </div>
-      <div style={{ height: '250px' }}>
+      <div className="h-48 sm:h-56 md:h-64">
         {chartType === 'line' && <Line data={chartData} options={options} />}
         {chartType === 'bar' && <Bar data={chartData} options={options} />}
         {chartType === 'pie' && <Pie data={chartData} options={options} />}

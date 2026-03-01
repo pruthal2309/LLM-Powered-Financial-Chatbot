@@ -109,19 +109,20 @@ export const VoiceButton = ({ onTranscript, disabled }) => {
 
   return (
     <button
+      type="button"
       onClick={toggleListening}
       disabled={disabled}
       className={`
-        p-3 rounded-lg transition-all duration-200 shadow-sm
+        p-1.5 sm:p-2 rounded-lg transition-all duration-200
         ${isListening 
           ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' 
-          : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-600'
+          : 'hover:bg-gray-100 text-gray-600'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       `}
       title={isListening ? 'Stop listening' : 'Start voice input'}
     >
-      {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+      {isListening ? <MicOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Mic className="w-4 h-4 sm:w-5 sm:h-5" />}
     </button>
   );
 };
@@ -137,7 +138,7 @@ export const SpeakerButton = ({ text, disabled }) => {
       onClick={() => speak(text)}
       disabled={disabled}
       className={`
-        p-2 rounded-lg transition-all duration-200
+        p-1.5 sm:p-2 rounded-lg transition-all duration-200
         ${isSpeaking 
           ? 'bg-blue-100 text-blue-600' 
           : 'hover:bg-gray-100 text-gray-600'
@@ -146,7 +147,7 @@ export const SpeakerButton = ({ text, disabled }) => {
       `}
       title={isSpeaking ? 'Stop speaking' : 'Read aloud'}
     >
-      {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+      {isSpeaking ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
     </button>
   );
 };

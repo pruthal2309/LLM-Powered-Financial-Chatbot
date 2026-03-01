@@ -321,7 +321,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
+    <div className="flex h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900 overflow-hidden">
       {/* Sidebar */}
       <Sidebar
         conversations={conversations}
@@ -334,46 +334,68 @@ const ChatPage = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200/50 bg-white/80 backdrop-blur-xl shadow-sm">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200"
-            >
-              <Menu className="w-5 h-5 text-gray-700" />
-            </button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
-                <Bot className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold gradient-text">
-                  Financial AI Assistant
-                </h1>
-                <p className="text-xs text-gray-500">Powered by Groq AI</p>
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Header - Mobile First */}
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-b border-gray-200/50 bg-white/80 backdrop-blur-xl shadow-sm gap-3 sm:gap-4">
+          {/* Top Row: Logo and Actions */}
+          <div className="flex items-center justify-between w-full sm:w-auto gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 flex-shrink-0"
+              >
+                <Menu className="w-5 h-5 text-gray-700" />
+              </button>
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg flex-shrink-0">
+                  <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-sm sm:text-base md:text-lg font-bold gradient-text truncate">
+                    Financial AI Assistant
+                  </h1>
+                  <p className="text-xs text-gray-500 hidden sm:block">Powered by Groq AI</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-4">
-            {/* Feature Selector in Header */}
-            <FeatureSelector
-              selectedFeature={selectedFeature}
-              onFeatureChange={handleFeatureChange}
-              disabled={isLoading}
-            />
-            
-            <div className="flex items-center gap-2 border-l border-gray-200 pl-4">
-              {/* Export Reports */}
+            {/* Mobile Actions */}
+            <div className="flex items-center gap-1 sm:hidden flex-shrink-0">
               {messages.length > 0 && (
                 <ExportReports 
                   messages={messages} 
                   conversationTitle={currentConversation?.title || 'Chat'}
                 />
               )}
-              
+              <button
+                onClick={handleShare}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200"
+                title="Share"
+              >
+                <Share2 className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+          </div>
+
+          {/* Bottom Row: Feature Selector and Desktop Actions */}
+          <div className="flex items-center justify-between w-full sm:w-auto gap-2 sm:gap-4">
+            {/* Feature Selector - Scrollable on mobile */}
+            <div className="flex-1 sm:flex-initial overflow-x-auto scrollbar-thin">
+              <FeatureSelector
+                selectedFeature={selectedFeature}
+                onFeatureChange={handleFeatureChange}
+                disabled={isLoading}
+              />
+            </div>
+            
+            {/* Desktop Actions */}
+            <div className="hidden sm:flex items-center gap-2 border-l border-gray-200 pl-4 flex-shrink-0">
+              {messages.length > 0 && (
+                <ExportReports 
+                  messages={messages} 
+                  conversationTitle={currentConversation?.title || 'Chat'}
+                />
+              )}
               <button
                 onClick={handleShare}
                 className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
@@ -385,39 +407,39 @@ const ChatPage = () => {
           </div>
         </header>
 
-        {/* Messages */}
-        <main className="flex-1 overflow-y-auto scrollbar-thin p-6 md:p-8">
+        {/* Messages - Mobile First */}
+        <main className="flex-1 overflow-y-auto scrollbar-thin p-3 sm:p-4 md:p-6 lg:p-8">
           <div className="max-w-4xl mx-auto">
             {messages.length === 0 && !isLoading && (
-              <div className="text-center mt-24">
-                <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-xl">
-                  <Bot className="w-12 h-12 text-blue-600" />
+              <div className="text-center mt-8 sm:mt-12 md:mt-16 lg:mt-24 px-2">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-xl">
+                  <Bot className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome to FinChatBot</h2>
-                <p className="text-gray-500 mb-8 max-w-md mx-auto">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2">Welcome to FinChatBot</h2>
+                <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 max-w-md mx-auto px-4">
                   Your intelligent financial assistant. Upload documents or ask questions to get started.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                  <div className="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3 mx-auto">
-                      <span className="text-2xl">📄</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
+                  <div className="p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-blue-100 flex items-center justify-center mb-2 sm:mb-3 mx-auto">
+                      <span className="text-xl sm:text-2xl">📄</span>
                     </div>
-                    <p className="text-sm font-semibold text-gray-700">Upload Documents</p>
-                    <p className="text-xs text-gray-500 mt-1">PDF, Excel, CSV files</p>
+                    <p className="text-sm sm:text-base font-semibold text-gray-700">Upload Documents</p>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1">PDF, Excel, CSV files</p>
                   </div>
-                  <div className="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3 mx-auto">
-                      <span className="text-2xl">💬</span>
+                  <div className="p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-blue-100 flex items-center justify-center mb-2 sm:mb-3 mx-auto">
+                      <span className="text-xl sm:text-2xl">💬</span>
                     </div>
-                    <p className="text-sm font-semibold text-gray-700">Ask Questions</p>
-                    <p className="text-xs text-gray-500 mt-1">Get instant answers</p>
+                    <p className="text-sm sm:text-base font-semibold text-gray-700">Ask Questions</p>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1">Get instant answers</p>
                   </div>
-                  <div className="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3 mx-auto">
-                      <span className="text-2xl">📊</span>
+                  <div className="p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow sm:col-span-2 md:col-span-1">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-blue-100 flex items-center justify-center mb-2 sm:mb-3 mx-auto">
+                      <span className="text-xl sm:text-2xl">📊</span>
                     </div>
-                    <p className="text-sm font-semibold text-gray-700">Analyze Data</p>
-                    <p className="text-xs text-gray-500 mt-1">Financial insights</p>
+                    <p className="text-sm sm:text-base font-semibold text-gray-700">Analyze Data</p>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1">Financial insights</p>
                   </div>
                 </div>
               </div>
@@ -438,15 +460,15 @@ const ChatPage = () => {
             )}
 
             {isLoading && messages.length > 0 && (
-              <div className="flex gap-4 mb-6 animate-fadeIn">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
-                  <Bot className="w-6 h-6 text-white" />
+              <div className="flex gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 animate-fadeIn">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg flex-shrink-0">
+                  <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
-                <div className="px-6 py-4 bg-white rounded-3xl rounded-tl-md shadow-md border border-gray-100">
+                <div className="px-4 py-3 sm:px-6 sm:py-4 bg-white rounded-2xl sm:rounded-3xl rounded-tl-md shadow-md border border-gray-100">
                   <div className="flex gap-1.5">
-                    <span className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-bounce-dot"></span>
-                    <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-bounce-dot"></span>
-                    <span className="w-2.5 h-2.5 bg-blue-700 rounded-full animate-bounce-dot"></span>
+                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-blue-500 rounded-full animate-bounce-dot"></span>
+                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-blue-600 rounded-full animate-bounce-dot"></span>
+                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-blue-700 rounded-full animate-bounce-dot"></span>
                   </div>
                 </div>
               </div>
@@ -456,31 +478,18 @@ const ChatPage = () => {
           </div>
         </main>
 
-        {/* Input */}
-        <footer className="p-6 md:p-8 border-t border-gray-200/50 bg-white/80 backdrop-blur-xl">
+        {/* Input - Fixed at bottom, mobile optimized */}
+        <footer className="p-3 sm:p-4 md:p-6 lg:p-8 border-t border-gray-200/50 bg-white/80 backdrop-blur-xl">
           <div className="max-w-4xl mx-auto">
-            {/* <div className="flex items-end gap-2"> */}
-            <div className="flex items-center gap-2 w-full">
-              
-                {/* Voice Input Button */}
-                <div className="h-12 flex items-center">
-                <VoiceButton 
-                  onTranscript={handleVoiceTranscript}
-                  disabled={isLoading}
-                />
-                </div>
-              
-                <div className="flex-1">
-                {/* Chat Input */}
-                <ChatInput
-                  input={input}
-                  setInput={setInput}
-                  onSend={handleSend}
-                  isLoading={isLoading}
-                  onFileUpload={handleFileUpload}
-                />
-              </div>
-            </div>
+            {/* Chat Input with integrated voice button */}
+            <ChatInput
+              input={input}
+              setInput={setInput}
+              onSend={handleSend}
+              isLoading={isLoading}
+              onFileUpload={handleFileUpload}
+              onVoiceTranscript={handleVoiceTranscript}
+            />
           </div>
         </footer>
       </div>

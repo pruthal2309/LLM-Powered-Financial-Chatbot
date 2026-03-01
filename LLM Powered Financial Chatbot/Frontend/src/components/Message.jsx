@@ -17,28 +17,28 @@ const Message = ({ message }) => {
   const isSystem = role === 'system';
 
   return (
-    <div className={`flex gap-4 mb-8 animate-fadeIn ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 animate-fadeIn ${isUser ? 'justify-end' : 'justify-start'}`}>
       {/* Avatar (left side for assistant/system) */}
       {!isUser && (
         <div className="flex-shrink-0">
           <div
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg ${
               isAssistant 
                 ? 'bg-gradient-to-br from-blue-600 to-blue-700' 
                 : 'bg-gradient-to-br from-blue-100 to-blue-200'
             }`}
           >
             {isAssistant ? (
-              <Bot className="w-6 h-6 text-white" />
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
             ) : (
-              <Info className="w-5 h-5 text-blue-600" />
+              <Info className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-blue-600" />
             )}
           </div>
         </div>
       )}
 
       {/* Message Content */}
-      <div className="flex-1 max-w-[75%] md:max-w-[65%]">
+      <div className="flex-1 max-w-[85%] sm:max-w-[80%] md:max-w-[75%] lg:max-w-[65%]">
         <div
           className={`${
             isUser
@@ -90,8 +90,8 @@ const Message = ({ message }) => {
       {/* Avatar (right side for user) */}
       {isUser && (
         <div className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center shadow-lg">
-            <User className="w-6 h-6 text-gray-700" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center shadow-lg">
+            <User className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-700" />
           </div>
         </div>
       )}

@@ -106,22 +106,22 @@ const ExportReports = ({ messages, conversationTitle }) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 sm:gap-2">
       <button
         onClick={exportToPDF}
-        className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-all duration-200 text-sm font-medium"
+        className="flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-all duration-200 text-xs sm:text-sm font-medium"
         title="Export as PDF"
       >
-        <FileDown className="w-4 h-4" />
-        <span className="hidden md:inline">PDF</span>
+        <FileDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <span className="hidden sm:inline">PDF</span>
       </button>
       <button
         onClick={exportToMarkdown}
-        className="flex items-center gap-2 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all duration-200 text-sm font-medium"
+        className="flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all duration-200 text-xs sm:text-sm font-medium"
         title="Export as Markdown"
       >
-        <FileText className="w-4 h-4" />
-        <span className="hidden md:inline">MD</span>
+        <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <span className="hidden sm:inline">MD</span>
       </button>
     </div>
   );

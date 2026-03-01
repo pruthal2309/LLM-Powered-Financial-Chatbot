@@ -52,7 +52,7 @@ const FeatureSelector = ({ selectedFeature, onFeatureChange, disabled }) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       {features.map((feature) => {
         const Icon = feature.icon;
         const isSelected = selectedFeature === feature.id;
@@ -63,16 +63,23 @@ const FeatureSelector = ({ selectedFeature, onFeatureChange, disabled }) => {
             onClick={() => onFeatureChange(feature.id)}
             disabled={disabled}
             className={`
-              flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-200
+              flex items-center gap-1.5 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg border-2 transition-all duration-200
               ${getColorClasses(feature.color, isSelected)}
               ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
               ${!isSelected && !disabled ? 'border-gray-200' : ''}
+              whitespace-nowrap
             `}
             title={feature.name}
           >
-            <Icon className="w-4 h-4" />
-            <span className="text-sm font-medium hidden md:inline">
+            <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium hidden sm:inline">
               {feature.name}
+            </span>
+            {/* Show abbreviated name on mobile */}
+            <span className="text-xs font-medium sm:hidden">
+              {feature.id === 'Smart_Chat' ? 'Chat' : 
+               feature.id === 'Document_Analysis' ? 'Docs' :
+               feature.id === 'Analytical_Insights' ? 'Insights' : 'General'}
             </span>
           </button>
         );

@@ -10,11 +10,15 @@ import Sidebar from '../components/Sidebar';
 import Message from '../components/Message';
 import ChatInput from '../components/ChatInput';
 import FeatureSelector from '../components/FeatureSelector';
+import { VoiceButton } from '../components/VoiceInput';
+import ExportReports from '../components/ExportReports';
+import SmartSuggestions from '../components/SmartSuggestions';
 
 const ChatPage = () => {
   // State
   const [conversations, setConversations] = useState([]);
   const [currentConversationId, setCurrentConversationId] = useState(null);
+  const [currentConversation, setCurrentConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -79,6 +83,7 @@ const ChatPage = () => {
       setIsLoading(true);
       const response = await conversationAPI.getById(currentConversationId);
       setMessages(response.data.data.messages);
+      setCurrentConversation(response.data.data.conversation);
     } catch (error) {
       console.error('Failed to fetch messages:', error);
       setMessages([
@@ -292,6 +297,29 @@ const ChatPage = () => {
     }
   };
 
+  /**
+   * Handle voice transcript
+   */
+  const handleVoiceTranscript = (transcript) => {
+    setInput(transcript);
+  };
+
+  /**
+   * Handle suggestion click
+   */
+  const handleSuggestionClick = (suggestion) => {
+    setInput(suggestion);
+    // Auto-send after a brief delay
+    setTimeout(() => {
+      if (suggestion) {
+        setInput(suggestion);
+        // Trigger send
+        const event = new Event('submit');
+        handleSend();
+      }
+    }, 100);
+  };
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 text-gray-900">
       {/* Sidebar */}
@@ -338,19 +366,20 @@ const ChatPage = () => {
             />
             
             <div className="flex items-center gap-2 border-l border-gray-200 pl-4">
+              {/* Export Reports */}
+              {messages.length > 0 && (
+                <ExportReports 
+                  messages={messages} 
+                  conversationTitle={currentConversation?.title || 'Chat'}
+                />
+              )}
+              
               <button
                 onClick={handleShare}
                 className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
                 title="Share conversation"
               >
                 <Share2 className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
-              </button>
-              <button
-                onClick={handleExport}
-                className="p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
-                title="Export conversation"
-              >
-                <Download className="w-5 h-5 text-gray-600 group-hover:text-blue-600" />
               </button>
             </div>
           </div>
@@ -398,6 +427,16 @@ const ChatPage = () => {
               <Message key={msg._id} message={msg} />
             ))}
 
+            {/* Smart Suggestions after last assistant message */}
+            {messages.length > 0 && messages[messages.length - 1].role === 'assistant' && !isLoading && (
+              <SmartSuggestions
+                lastMessage={messages[messages.length - 1]}
+                documents={currentConversation?.documents || []}
+                onSuggestionClick={handleSuggestionClick}
+                disabled={isLoading}
+              />
+            )}
+
             {isLoading && messages.length > 0 && (
               <div className="flex gap-4 mb-6 animate-fadeIn">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
@@ -420,13 +459,28 @@ const ChatPage = () => {
         {/* Input */}
         <footer className="p-6 md:p-8 border-t border-gray-200/50 bg-white/80 backdrop-blur-xl">
           <div className="max-w-4xl mx-auto">
-            <ChatInput
-              input={input}
-              setInput={setInput}
-              onSend={handleSend}
-              isLoading={isLoading}
-              onFileUpload={handleFileUpload}
-            />
+            {/* <div className="flex items-end gap-2"> */}
+            <div className="flex items-center gap-2 w-full">
+              
+                {/* Voice Input Button */}
+                <div className="h-12 flex items-center">
+                <VoiceButton 
+                  onTranscript={handleVoiceTranscript}
+                  disabled={isLoading}
+                />
+                </div>
+              
+                <div className="flex-1">
+                {/* Chat Input */}
+                <ChatInput
+                  input={input}
+                  setInput={setInput}
+                  onSend={handleSend}
+                  isLoading={isLoading}
+                  onFileUpload={handleFileUpload}
+                />
+              </div>
+            </div>
           </div>
         </footer>
       </div>

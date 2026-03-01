@@ -70,57 +70,43 @@ const ChatInput = ({ input, setInput, onSend, isLoading, onFileUpload }) => {
       )}
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        {/* File Upload Button */}
-        <label className="flex-shrink-0">
-          <input
-            type="file"
-            multiple
-            accept=".pdf,.xlsx,.xls,.csv"
-            onChange={handleFileSelect}
-            className="hidden"
-            disabled={isLoading}
-          />
-          <div
-            className={`
-              p-3 rounded-lg border cursor-pointer
-              transition-colors shadow-sm
-              ${
-                isLoading
-                  ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-50'
-                  : 'bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-              }
-            `}
-          >
-            <Paperclip className="w-5 h-5 text-gray-600" />
-          </div>
-        </label>
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="flex items-center gap-3 px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+          {/* File Upload Button */}
+          <label className="flex-shrink-0 cursor-pointer">
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.xlsx,.xls,.csv"
+              onChange={handleFileSelect}
+              className="hidden"
+              disabled={isLoading}
+            />
+            <div className={`p-2 rounded-lg transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}>
+              <Paperclip className="w-5 h-5 text-gray-500" />
+            </div>
+          </label>
 
-        {/* Text Input */}
-        <div className="flex-1 relative">
-          <textarea
+          {/* Text Input */}
+          <input
+            type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask a question about your documents..."
+            placeholder="I want to analyse my document"
             disabled={isLoading}
-            rows={1}
-            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 placeholder-gray-400 shadow-sm"
-            style={{
-              minHeight: '48px',
-              maxHeight: '120px',
-            }}
+            className="flex-1 bg-transparent focus:outline-none text-gray-900 placeholder-gray-400 disabled:opacity-50"
           />
-        </div>
 
-        {/* Send Button */}
-        <button
-          type="submit"
-          disabled={isLoading || !input.trim()}
-          className="flex-shrink-0 p-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-        >
-          <Send className="w-5 h-5 text-white" />
-        </button>
+          {/* Send Button */}
+          <button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            className="flex-shrink-0 p-2.5 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Send className="w-5 h-5 text-white" />
+          </button>
+        </div>
       </form>
 
       {/* Helper Text */}

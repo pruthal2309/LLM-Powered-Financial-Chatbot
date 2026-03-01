@@ -1,10 +1,12 @@
 /**
  * Message Component
- * Displays a single chat message
+ * Displays a single chat message with voice and visualization
  */
 
 import { User, Bot, Info } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SpeakerButton } from './VoiceInput';
+import DataVisualization from './DataVisualization';
 
 const Message = ({ message }) => {
   const { role, content } = message;
@@ -36,39 +38,53 @@ const Message = ({ message }) => {
       )}
 
       {/* Message Content */}
-      <div
-        className={`max-w-[75%] md:max-w-[65%] ${
-          isUser
-            ? 'message-user px-6 py-4'
-            : isAssistant
-            ? 'message-assistant px-6 py-4'
-            : 'message-system px-5 py-3'
-        }`}
-      >
-        {isAssistant ? (
-          // Render markdown for assistant messages
-          <div className="prose prose-gray prose-sm max-w-none">
-            <ReactMarkdown
-              components={{
-                p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
-                ul: ({node, ...props}) => <ul className="mb-3 ml-4 space-y-1" {...props} />,
-                ol: ({node, ...props}) => <ol className="mb-3 ml-4 space-y-1" {...props} />,
-                li: ({node, ...props}) => <li className="leading-relaxed" {...props} />,
-                code: ({node, inline, ...props}) => 
-                  inline ? (
-                    <code className="px-1.5 py-0.5 bg-gray-100 rounded text-sm font-mono" {...props} />
-                  ) : (
-                    <code className="block p-3 bg-gray-50 rounded-lg text-sm font-mono overflow-x-auto" {...props} />
-                  ),
-              }}
-            >
-              {content}
-            </ReactMarkdown>
+      <div className="flex-1 max-w-[75%] md:max-w-[65%]">
+        <div
+          className={`${
+            isUser
+              ? 'message-user px-6 py-4'
+              : isAssistant
+              ? 'message-assistant px-6 py-4'
+              : 'message-system px-5 py-3'
+          }`}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1">
+              {isAssistant ? (
+                // Render markdown for assistant messages
+                <div className="prose prose-gray prose-sm max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
+                      ul: ({node, ...props}) => <ul className="mb-3 ml-4 space-y-1" {...props} />,
+                      ol: ({node, ...props}) => <ol className="mb-3 ml-4 space-y-1" {...props} />,
+                      li: ({node, ...props}) => <li className="leading-relaxed" {...props} />,
+                      code: ({node, inline, ...props}) => 
+                        inline ? (
+                          <code className="px-1.5 py-0.5 bg-gray-100 rounded text-sm font-mono" {...props} />
+                        ) : (
+                          <code className="block p-3 bg-gray-50 rounded-lg text-sm font-mono overflow-x-auto" {...props} />
+                        ),
+                    }}
+                  >
+                    {content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                // Plain text for user and system messages
+                <p className={`leading-relaxed ${isSystem ? 'text-sm' : 'text-base'}`}>{content}</p>
+              )}
+            </div>
+            
+            {/* Voice button for assistant messages */}
+            {isAssistant && (
+              <SpeakerButton text={content} />
+            )}
           </div>
-        ) : (
-          // Plain text for user and system messages
-          <p className={`leading-relaxed ${isSystem ? 'text-sm' : 'text-base'}`}>{content}</p>
-        )}
+        </div>
+        
+        {/* Data Visualization for assistant messages */}
+        {isAssistant && <DataVisualization content={content} />}
       </div>
 
       {/* Avatar (right side for user) */}

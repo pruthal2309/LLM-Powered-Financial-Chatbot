@@ -355,18 +355,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Your Name** - Initial work
+- **Pruthal Hirpara** - Initial work
 
----
 
-## 📞 Support
-
-For support, email support@finchatbot.com or open an issue on GitHub.
-
----
-
-**Built with ❤️ using AI and modern web technologies**
-
-**Version:** 2.0 - Mobile Responsive  
-**Last Updated:** March 1, 2026  
-**Status:** ✅ Production Ready
+**Built using AI and modern web technologies**

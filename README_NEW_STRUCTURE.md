@@ -39,64 +39,59 @@ A modern, full-stack financial chatbot application that uses AI to analyze docum
 - **Adaptive Layout**: Seamless experience across screen sizes
 - **No Horizontal Scroll**: Perfect viewport fit
 
-### 🎨 Modern UI/UX
-- Beautiful gradient design
-- Smooth animations
-- Dark mode support
-- Loading states
-- Error handling
-- Toast notifications
-
 ---
 
-## 🏗️ Architecture
-
-### Tech Stack
-
-**Frontend:**
-- ⚛️ React 18 + Vite
-- 🎨 Tailwind CSS
-- 📊 Chart.js
-- 🎤 Web Speech API
-- 📝 React Markdown
-- 🔄 Axios
-
-**Backend (Node.js):**
-- 🚀 Express.js
-- 🗄️ MongoDB + Mongoose
-- 📁 Multer (file uploads)
-- 🔐 CORS enabled
-- ⚡ RESTful API
-
-**AI Backend (Python):**
-- 🐍 FastAPI
-- 🤖 LangChain
-- 🧠 Groq AI (FREE)
-- 📚 FAISS Vector Store
-- 📄 PyMuPDF (PDF processing)
-- 🔢 Sentence Transformers
-
-### System Architecture
+## 🏗️ Project Structure
 
 ```
-┌─────────────────┐
-│   React App     │  ← User Interface
-│   (Frontend)    │
-└────────┬────────┘
-         │
-         ├─────────────────────────────┐
-         │                             │
-         ▼                             ▼
-┌─────────────────┐          ┌─────────────────┐
-│   Node.js API   │          │   Python API    │
-│   (Backend)     │◄────────►│   (AI Engine)   │
-└────────┬────────┘          └────────┬────────┘
-         │                             │
-         ▼                             ▼
-┌─────────────────┐          ┌─────────────────┐
-│    MongoDB      │          │  FAISS Vectors  │
-│   (Database)    │          │  (Embeddings)   │
-└─────────────────┘          └─────────────────┘
+Project Root/
+├── Backend/                    # Node.js Express API
+│   ├── src/
+│   │   ├── controllers/       # Request handlers
+│   │   ├── models/            # MongoDB schemas
+│   │   ├── routes/            # API endpoints
+│   │   ├── middlewares/       # Custom middleware
+│   │   ├── utils/             # Helper functions
+│   │   ├── app.js            # Express app setup
+│   │   └── server.js         # Server entry point
+│   ├── uploads/               # Uploaded files
+│   ├── .env                   # Environment variables (create from .env.example)
+│   ├── .env.example          # Environment template
+│   ├── package.json
+│   └── README.md
+│
+├── Frontend/                  # React Application
+│   ├── src/
+│   │   ├── components/       # React components
+│   │   ├── pages/            # Page components
+│   │   ├── utils/            # Utilities
+│   │   ├── assets/           # Static assets
+│   │   ├── App.jsx           # Main app component
+│   │   └── main.jsx          # Entry point
+│   ├── public/               # Public files
+│   ├── .env                  # Environment variables (create from .env.example)
+│   ├── .env.example         # Environment template
+│   ├── package.json
+│   ├── vite.config.js
+│   └── README.md
+│
+├── Python-Backend/           # Python FastAPI AI Engine
+│   ├── app/
+│   │   ├── api/             # API routes
+│   │   ├── config/          # Configuration
+│   │   ├── models/          # Data schemas
+│   │   ├── services/        # AI services
+│   │   └── main.py          # FastAPI app
+│   ├── vector_store/        # FAISS indices
+│   ├── .env                 # Environment variables (create from .env.example)
+│   ├── .env.example        # Environment template
+│   ├── requirements.txt
+│   └── README.md
+│
+├── README.md                # This file
+├── DEPLOYMENT_CHECKLIST.md # Deployment guide
+├── QUICK_DEPLOY.md         # Quick deployment
+└── LICENSE                 # License file
 ```
 
 ---
@@ -115,7 +110,7 @@ A modern, full-stack financial chatbot application that uses AI to analyze docum
 **1. Clone the Repository**
 ```bash
 git clone <repository-url>
-cd "LLM Powered Financial Chatbot"
+cd <project-root>
 ```
 
 **2. Setup Node.js Backend**
@@ -157,14 +152,15 @@ http://localhost:5173
 
 ## 🔑 Environment Variables
 
-### Backend (.env)
+### Backend/.env
 ```env
 PORT=8000
 MONGODB_URI=mongodb://localhost:27017/finchatbot
-PYTHON_API_URL=http://localhost:5000
+PYTHON_SERVICE_URL=http://localhost:5000
+CORS_ORIGIN=http://localhost:5173
 ```
 
-### Python-Backend (.env)
+### Python-Backend/.env
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 NODE_WEBHOOK_URL=http://localhost:8000
@@ -172,7 +168,7 @@ PORT=5000
 LLM_MODEL=llama-3.1-8b-instant
 ```
 
-### Frontend (.env)
+### Frontend/.env
 ```env
 VITE_API_URL=http://localhost:8000/api/v1
 ```
@@ -209,72 +205,29 @@ VITE_API_URL=http://localhost:8000/api/v1
 - Choose PDF or Markdown format
 - Download your conversation history
 
-### 6. Switch Feature Modes
-- **Smart Chat**: General AI conversation
-- **Document Analysis**: Focus on uploaded files
-- **Analytical Insights**: Deep data analysis
-- **General Conversation**: Casual chat
-
----
-
-## 🎯 Use Cases
-
-### Financial Analysis
-- Analyze quarterly reports
-- Extract key metrics
-- Compare financial statements
-- Identify trends and patterns
-
-### Document Q&A
-- Ask questions about PDFs
-- Get instant answers
-- Multi-document queries
-- Context-aware responses
-
-### Data Insights
-- Visualize financial data
-- Generate charts automatically
-- Trend analysis
-- Performance metrics
-
-### Report Generation
-- Export conversations
-- Create summaries
-- Share insights
-- Document findings
-
 ---
 
 ## 🛠️ Development
 
-### Project Structure
+### Running in Development Mode
 
+**Terminal 1 - Backend:**
+```bash
+cd Backend
+npm run dev
 ```
-LLM Powered Financial Chatbot/
-├── Backend/                 # Node.js Express API
-│   ├── src/
-│   │   ├── controllers/    # Request handlers
-│   │   ├── models/         # MongoDB schemas
-│   │   ├── routes/         # API endpoints
-│   │   ├── middlewares/    # Custom middleware
-│   │   └── utils/          # Helper functions
-│   └── uploads/            # Uploaded files
-│
-├── Python-Backend/         # Python FastAPI AI Engine
-│   ├── app/
-│   │   ├── api/           # API routes
-│   │   ├── config/        # Configuration
-│   │   ├── models/        # Data schemas
-│   │   └── services/      # AI services
-│   └── vector_store/      # FAISS indices
-│
-└── Frontend/              # React Application
-    ├── src/
-    │   ├── components/    # React components
-    │   ├── pages/         # Page components
-    │   ├── utils/         # Utilities
-    │   └── assets/        # Static assets
-    └── public/            # Public files
+
+**Terminal 2 - Python Backend:**
+```bash
+cd Python-Backend
+venv\Scripts\activate
+python -m uvicorn app.main:app --reload --port 5000
+```
+
+**Terminal 3 - Frontend:**
+```bash
+cd Frontend
+npm run dev
 ```
 
 ### API Endpoints
@@ -301,93 +254,20 @@ POST   /delete-document               # Delete document
 POST   /delete-documents              # Batch delete
 ```
 
-### Running Tests
-
-```bash
-# Backend tests
-cd Backend
-npm test
-
-# Python tests
-cd Python-Backend
-pytest
-
-# Frontend tests
-cd Frontend
-npm test
-```
-
----
-
-## 🔧 Configuration
-
-### AI Model Selection
-
-Edit `Python-Backend/app/config/settings.py`:
-
-```python
-# Fast and efficient (recommended)
-LLM_MODEL = "llama-3.1-8b-instant"
-
-# More powerful
-LLM_MODEL = "llama-3.1-70b-versatile"
-
-# Balanced
-LLM_MODEL = "mixtral-8x7b-32768"
-```
-
-### Chunk Size Configuration
-
-```python
-CHUNK_SIZE = 1000        # Text chunk size
-CHUNK_OVERLAP = 150      # Overlap between chunks
-TOP_K_RESULTS = 5        # Number of relevant chunks
-```
-
-### Frontend Customization
-
-Edit `Frontend/src/index.css` for theme colors:
-
-```css
-/* Change primary color */
-.gradient-text {
-  @apply bg-gradient-to-r from-blue-600 to-blue-700;
-}
-```
-
 ---
 
 ## 🚀 Deployment
 
-### Frontend (Vercel/Netlify)
+See [QUICK_DEPLOY.md](QUICK_DEPLOY.md) for detailed deployment instructions.
 
-```bash
-cd Frontend
-npm run build
-# Deploy dist/ folder
-```
+**Recommended Stack:**
+- Frontend: Vercel (Free)
+- Backend: Railway (Free tier)
+- Python: Railway (Free tier)
+- Database: MongoDB Atlas (Free tier)
+- AI: Groq (Free)
 
-### Backend (Heroku/Railway)
-
-```bash
-cd Backend
-# Add Procfile: web: node src/server.js
-git push heroku main
-```
-
-### Python Backend (Railway/Render)
-
-```bash
-cd Python-Backend
-# Add Procfile: web: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-git push railway main
-```
-
-### MongoDB (Atlas)
-
-1. Create cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
-2. Get connection string
-3. Update `MONGODB_URI` in Backend/.env
+**Total Cost: $0/month** 🎉
 
 ---
 
@@ -427,10 +307,10 @@ Contributions are welcome! Please follow these steps:
 
 ## 📝 Documentation
 
+- [Deployment Checklist](DEPLOYMENT_CHECKLIST.md)
+- [Quick Deploy Guide](QUICK_DEPLOY.md)
 - [Groq Setup Guide](Python-Backend/GROQ_SETUP.md)
 - [Responsive Design Guide](RESPONSIVE_DESIGN_GUIDE.md)
-- [Free Models List](Python-Backend/FREE_MODELS.md)
-- [Migration Guide](Python-Backend/MIGRATION_COMPLETE.md)
 
 ---
 
@@ -456,7 +336,6 @@ pip install --upgrade -r requirements.txt
 # Change port in .env files
 # Backend: PORT=8001
 # Python: PORT=5001
-# Frontend: Update vite.config.js
 ```
 
 **Groq API Error:**
@@ -465,30 +344,6 @@ pip install --upgrade -r requirements.txt
 # Get new key from console.groq.com
 # Update Python-Backend/.env
 ```
-
----
-
-## 📈 Roadmap
-
-- [ ] Multi-language support
-- [ ] Advanced analytics dashboard
-- [ ] Team collaboration features
-- [ ] API rate limiting
-- [ ] Caching layer
-- [ ] WebSocket support
-- [ ] Mobile app (React Native)
-- [ ] Desktop app (Electron)
-
----
-
-## 🙏 Acknowledgments
-
-- **Groq** - Free AI models
-- **LangChain** - RAG framework
-- **MongoDB** - Database
-- **React** - Frontend framework
-- **FastAPI** - Python backend
-- **Tailwind CSS** - Styling
 
 ---
 
@@ -507,12 +362,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support, email support@finchatbot.com or open an issue on GitHub.
-
----
-
-## ⭐ Star History
-
-If you find this project useful, please consider giving it a star!
 
 ---
 
